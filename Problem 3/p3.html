@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html >
+<head>
+  <title>Todo List</title>
+</head>
+<body>
+  <h1>Todo List</h1>
+  <form id="taskForm">
+    <label for="taskTitle">Title:</label>
+    <input type="text" id="taskTitle" required>
+    <label for="taskDetails">Details:</label>
+    <input type="text" id="taskDetails">
+    <button type="submit">Add Task</button>
+  </form>
+  <ul id="taskList"></ul>
+
+  <script>
+    document.getElementById('taskForm').addEventListener('submit', function(event) {
+      event.preventDefault(); // Prevent form submission
+
+      const title = document.getElementById('taskTitle').value;
+      const details = document.getElementById('taskDetails').value;
+      addTask(title, details);
+      document.getElementById('taskForm').reset(); // Reset form after adding task
+    });
+
+    function addTask(title, details) {
+      const taskList = document.getElementById('taskList');
+      const li = document.createElement('li');
+      li.innerHTML = `
+        <span>${title}</span>
+        <span>${details}</span>
+        <button onclick="editTask(this)">Edit</button>
+        <button onclick="deleteTask(this)">Delete</button>
+      `;
+      taskList.appendChild(li);
+    }
+
+    function editTask(button) {
+      const taskItem = button.parentNode;
+      const title = taskItem.querySelector('span:first-child').textContent;
+      const details = taskItem.querySelector('span:nth-child(2)').textContent;
+      const newTitle = prompt('Edit Title:', title);
+      const newDetails = prompt('Edit Details:', details);
+      taskItem.querySelector('span:first-child').textContent = newTitle;
+      taskItem.querySelector('span:nth-child(2)').textContent = newDetails;
+    }
+
+    function deleteTask(button) {
+      const taskItem = button.parentNode;
+      taskItem.parentNode.removeChild(taskItem);
+    }
+  </script>
+</body>
+</html>
